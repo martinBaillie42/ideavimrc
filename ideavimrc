@@ -1,0 +1,397 @@
+"" .ideavimrc - Matt Chapman
+"" https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/
+
+"" Base Settings
+"" ========================================================
+
+" defines the number of lines to leave on the screen before scrolling
+set scrolloff=15
+" ensures the editor displays the line numbers to the left of the document. 
+"set linenumber
+" ensure that the Vim mode (normal, insert etc) is displayed at the bottom of the screen
+set showmode
+" ensure that any commands you execute are displayed at the bottom of the screen.
+set showcmd
+
+" use case-insensitive search by default.
+set ignorecase
+" if any of the search characters are uppercase, treat the search as case-sensitive.
+set smartcase
+" start searching as you type, rather than waiting for you to submit the complete search string first.
+set incsearch
+" ensures all of the search results are highlighted.
+set hlsearch
+
+" causes the annoying audible bell sound to stop being emitted whenever you enter an invalid input.
+set visualbell
+
+" Use system clipboard
+set clipboard+=unnamed   
+
+let mapleader = " "
+
+
+"" Plugin Settings
+"" ========================================================
+
+" Surround is already bundled with native IdeaVim, you simply need to enable it. Surround lets you change the ‘surrounds’ of a block of text. 
+" For example, you can change double quote characters to single quotes with the following command: 
+" cs"' This would result in "Foo bar" becoming 'Foo bar'
+set surround
+
+" Highlighted yank is also already bundled as part of IdeaVim. 
+" The premise of this one is simple, but very useful. When you yank a character, word, or line, it briefly highlights the content you’ve just yanked.
+set highlightedyank
+
+" Specifies the mode to be used when a refactoring selects text to be edited (e.g. renaming, live template fields, introduce variable, etc):
+"  keep         Keep the current mode
+"  select       Switch to Select mode
+"  visual       Switch to Visual mode
+" This option is only used when the refactoring is started in Normal,
+" Insert or Replace mode. Visual or Select modes are not changed.
+set idearefactormode=keep
+
+" When enabled, join commands will be handled by the IDE's "smart join" feature. The IDE can change syntax when joining lines, 
+" such as merging string literals or if statements
+set ideajoin
+          
+" Maps Vim's global marks to IDE bookmarks.         
+set ideamarks
+
+" https://plugins.jetbrains.com/plugin/15348-ideavim-sneak
+" IdeaVim Sneak is a port of the Vim-Sneak plugin to IdeaVim. It acts as a drop in overhaul and replacement for Vim’s search in line functionality. 
+" This one isn’t bundled with IdeaVim so you’ll need to install the plugin from the link above.
+" Vim uses f and F to search forwards and backwards for an instance of a single character in the current line. 
+" Sneak uses s and S to search forwards and backwards across multiple lines, and searches for 2 characters instead, allowing for much more targeted searching.
+" You can use ; and , to move to the next and previous search result, respectively.
+"set sneak
+
+" NerdTree is bundled with IdeaVim, and allows for Vim-like control over the file explorer. You can use the hjkl keys to navigate the tree structure, 
+" open and close directories, and view files in the editor, all without having to use the mouse. We’ll set some keybindings for NerdTree shortly.
+set nerdtree
+
+" https://plugins.jetbrains.com/plugin/13360-ideavim-easymotion
+" https://plugins.jetbrains.com/plugin/7086-acejump
+" IdeaVim-EasyMotion is perhaps the single most useful plugin in this section. It completely revolutionises how you move around in Vim. 
+" When you activate easymotion and start typing, it will highlight all instances of the sequence you type, and provide shortcodes which (once typed) 
+" will transport the cursor to that particular location. Easymotion isn’t bundled with IdeaVim so you’ll need to install the plugin using the above link, 
+" as well as AceJump which is a peer dependency.
+" In the above image, I have activated easymotion and typed set. Without having to press enter, all the instances have been highlighted, 
+" and I can jump to any of them with a couple of keypresses. So typing jj will transport the cursor to the start of line 7. Nifty right!
+" Handy feature - if you type the shortcode in caps it will transport the cursor in visual mode, highlighting everything in between.
+" Easymotion settings
+"set easymotion
+"set notimeout
+
+
+"" Key mappings
+"" ========================================================
+
+"inoremap jj <Esc>
+
+" Tab navigation
+" Move between tabs with Alt + p/n.
+nnoremap <A-n> :tabnext<CR>
+nnoremap <A-p> :tabprev<CR>
+
+nnoremap <C-o> :action Back<CR>
+nnoremap <C-i> :action Forward<CR>
+
+" Pane navigation
+" Move between panes with Ctrl + h/j/k/l.
+nnoremap <A-h> <C-w>h
+nnoremap <A-l> <C-w>l
+nnoremap <A-k> <C-w>k
+nnoremap <A-j> <C-w>j
+
+" Jump between methods
+"nnoremap [[ <Action>(MethodUp)
+"nnoremap ]] <Action>(MethodDown)
+nnoremap [ :action MethodUp<CR>
+nnoremap ] :action MethodDown<CR>
+
+" Easy visual indentation
+" Simplify indentation in visual mode, by making the action repeatable.
+vnoremap < <gv
+vnoremap > >gv
+
+" Execute macro saved in 'q' register
+"nnoremap qj @q
+
+" Popup navigation
+" Move between autocomplete pop-up suggestions with Ctrl+j/k.
+set lookupkeys=<Tab>,<Down>,<Up>,<Enter>,<Left>,<Right>,<C-Down>,<C-Up>,<PageUp>,<PageDown>,<C-Q>
+inoremap <C-j> :action EditorDown<CR>
+inoremap <C-k> :action EditorUp<CR>
+
+"" Leader commands
+"" ========================================================
+
+" Comment lines
+map <leader>c <action>(CommentByLineComment)
+
+" Show Quick Documentation
+map <leader>qd <action>(QuickJavaDoc)
+
+" Jump around with easymotion
+"map <leader>j <Plug>(easymotion-s)
+
+" Open NERDTree (use q to exit)
+map <leader>x :NERDTreeToggle<CR>
+
+" Folding
+map <leader>zc :action CollapseAllRegions<CR>
+map <leader>zo :action ExpandAllRegions<CR>
+
+" Window splits
+map <leader>wv <Action>(SplitVertically)
+map <leader>wh <Action>(SplitHorizontally)
+map <leader>wu <Action>(Unsplit)
+map <leader>wm <Action>(MoveEditorToOppositeTabGroup)
+map <leader>wq <Action>(CloseAllEditors)
+
+" Save all files
+map <leader>s <Action>(SaveAll)
+
+" Display options
+map <leader>dd <action>(ToggleDistractionFreeMode)
+map <leader>dz <action>(ToggleZenMode)
+map <leader>df <action>(ToggleFullScreen)
+
+" Actions
+map <leader>am <action>(ShowIntentionActions)
+"map <leader>as <action>(SearchEverywhere)
+
+" Find 
+map <leader><leader> <action>(SearchEverywhere)
+map <leader>fc <action>(GotoClass)
+map <leader>ff <action>(GotoFile)
+map <leader>fs <action>(GotoSymbol)
+map <leader>fa <action>(GotoAction)
+map <leader>ft <action>(TextSearchAction)
+map <leader>fr <action>(RecentFiles)
+map <leader>fp <action>(FindInPath)
+map <leader>fl <action>(RecentLocations)
+
+" Tool Windows
+map <leader>th <action>(HideAllWindows)
+map <leader>tt <action>(ActivateTerminalToolWindow)
+map <leader>tc <action>(ActivateCommitToolWindow)
+map <leader>tp <action>(ActivateProjectToolWindow)
+map <leader>tb <action>(ActivateBookmarksToolWindow)
+map <leader>tf <action>(ActivateFindToolWindow)
+map <leader>tl <action>(ActivateProblemsViewToolWindow)
+map <leader>tr <action>(ActivateStructureToolWindow)
+map <leader>ts <action>(ActivateServicesToolWindow)
+map <leader>tg <action>(ActivateVersionControlToolWindow)
+map <leader>ta <action>(ActivateAIAssistantToolWindow)
+map <leader>tj <action>(ActivateElectroJunToolWindowToolWindow)
+map <leader>td <action>(ActivateDatabaseToolWindow)
+map <leader>tn <action>(ActivateNotificationsToolWindow)
+map <leader>te <Action>(Git.Branches)
+
+
+" Refactoring
+map <leader>rn <Action>(RenameElement)
+map <leader>rm <Action>(ExtractMethod)
+map <leader>rv <Action>(IntroduceVariable)
+map <leader>rf <Action>(IntroduceField)
+map <leader>rs <Action>(ChangeSignature)
+map <leader>rr <Action>(Refactorings.QuickListPopupAction)
+
+" Go to code
+nmap <leader>fu <Action>(FindUsages)
+
+nmap <leader>n <Action>(ShowNavBar)
+nmap <leader>d <Action>(GotoDeclaration)
+nmap <leader>i <Action>(GotoImplementation)
+nmap <leader>y <Action>(GotoTypeDeclaration)
+nmap <leader>gs <Action>(GotoSuperMethod)
+nmap <leader>gr <Action>(GotoRelated)
+nmap <leader>gt <Action>(GotoTest)
+
+nmap <leader>gf <Action>(Back)
+nmap <leader>gb <Action>(Forward)
+
+
+"mark as a global mark/
+nnoremap ma mA
+nnoremap mb mB
+nnoremap mc mC
+nnoremap md mD
+nnoremap me mE
+nnoremap mf mF
+nnoremap mg mG
+nnoremap mh mH
+nnoremap mi mI
+nnoremap mj mJ
+nnoremap mk mK
+nnoremap ml mL
+nnoremap mm mM
+nnoremap mn mN
+nnoremap mo mO
+nnoremap mp mP
+nnoremap mq mQ
+nnoremap mr mR
+nnoremap ms mS
+nnoremap mt mT
+nnoremap mu mU
+nnoremap mv mV
+nnoremap mw mW
+nnoremap mx mX
+nnoremap my mY
+nnoremap mz mZ
+
+"go to global marks
+nnoremap 'a `A
+nnoremap 'b `B
+nnoremap 'c `C
+nnoremap 'd `D
+nnoremap 'e `E
+nnoremap 'f `F
+nnoremap 'g `G
+nnoremap 'h `H
+nnoremap 'i `I
+nnoremap 'j `J
+nnoremap 'k `K
+nnoremap 'l `L
+nnoremap 'm `M
+nnoremap 'n `N
+nnoremap 'o `O
+nnoremap 'p `P
+nnoremap 'q `Q
+nnoremap 'r `R
+nnoremap 's `S
+nnoremap 't `T
+nnoremap 'u `U
+nnoremap 'v `V
+nnoremap 'w `W
+nnoremap 'x `X
+nnoremap 'y `Y
+nnoremap 'z `Z
+
+" Errors
+"map <leader>en <Action>(ReSharperGotoNextErrorInSolution)
+"map <leader>ep <Action>(ReSharperGotoPrevErrorInSolution)
+
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+"set scrolloff=5
+
+" Do incremental searching.
+"set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+"map Q gq
+
+" --- Enable IdeaVim plugins https:/jb.gg/ideavim-plugins
+
+" Highlight copied text
+"Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+"Plug 'tpope/vim-commentary'
+
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+" https://plugins.jetbrains.com/plugin/15976-which-key
+
+" Which-Key is awesome. After you press the leader key, it will pop-up a modal at the bottom of your screen showing the possible key combinations you can press, 
+" and what each of those combinations will do. It even has support for groups!
+" By default, which-key will detect your keybindings and populate the modal content automatically. 
+" However, if you’d like to have friendly and more helpful descriptions for each command (I do), you can customise this behaviour.
+" Which-key settings
+"set which-key
+"let g:WhichKey_FontSize = 16
+"let g:WhichKey_CommandColor = "#41ead4"
+"let g:WhichKey_PrefixColor = "#f335b2"
+"let g:WhichKey_SortOrder = "by_key_prefix_first"
+
+"let g:WhichKeyDesc_leader = "<leader> Leader key"
+
+"let g:WhichKeyDesc_leader = "<leader>x Open file explorer"
+
+"let g:WhichKeyDesc_easymotion = "<leader>j Jump with Easymotion"
+"let g:WhichKeyDesc_easymotion_prefix = "<leader><leader>"
+
+"let g:WhichKeyDesc_comment = "<leader>c Comment line"
+
+"let g:WhichKeyDesc_fold = "<leader>z Folding"
+"let g:WhichKeyDesc_fold_all = "<leader>zc Fold all regions"
+"let g:WhichKeyDesc_unfold_all = "<leader>zo Unfold all regions"
+
+"let g:WhichKeyDesc_window = "<leader>w Window splits"
+"let g:WhichKeyDesc_window_split_vertically = "<leader>wv Split vertically"
+"let g:WhichKeyDesc_window_split_horizontally = "<leader>wh Split horizontally"
+"let g:WhichKeyDesc_window_split_unsplit = "<leader>wu Unsplit"
+"let g:WhichKeyDesc_window_split_move_editor = "<leader>wm Move editor to opposite tab group"
+
+
+"let g:WhichKeyDesc_display = "<leader>d Display options"
+"let g:WhichKeyDesc_zen_mode = "<leader>dz Toggle Zen mode"
+"let g:WhichKeyDesc_df_mode = "<leader>dd Toggle Distraction-Free mode"
+"let g:WhichKeyDesc_fullscreen = "<leader>df Toggle full screen"
+" The first line above sets the help text for the group, and the subsequent lines set the help text for each option in the group. 
+" When creating custom key descriptions like this, the syntax is as follows:
+" let g:WhichKeyDesc_<identifier> = "<keybinding> <helptext>"
+" The identifier can be anything you like, it doesn’t get displayed anywhere. You’ll see more examples in the full .ideavimrc file at the end of this blog, 
+" but I recommend checking out the Which-key documentation for more information about customising the behaviour.
+" https://github.com/TheBlob42/idea-which-key
+
+"let g:WhichKeyDesc_action= "<leader>a Actions"
+"let g:WhichKeyDesc_action_context_menu = "<leader>am Open context menu"
+"let g:WhichKeyDesc_action_search = "<leader>as Open command modal"
+
+"let g:WhichKeyDesc_file_quickLook = "<leader><leader> Recent files"
+
+"let g:WhichKeyDesc_file_nav = "<leader>f File navigation"
+"let g:WhichKeyDesc_file_nav_goto_file = "<leader>ff Go to file"
+"let g:WhichKeyDesc_file_nav_goto_content = "<leader>fc Search for file content"
+"let g:WhichKeyDesc_file_nav_show_recent_files = "<leader>fr Show recent files"
+"let g:WhichKeyDesc_file_nav_show_recent_locations = "<leader>fl Show recent locations"
+
+"let g:WhichKeyDesc_close_tab = "<leader>q Close active tab"
+
+"let g:WhichKeyDesc_refactoring = "<leader>r Refactoring menu"
+"let g:WhichKeyDesc_refactoring_rename = "<leader>rn Rename element"
+"let g:WhichKeyDesc_refactoring_method = "<leader>rm Extract method"
+"let g:WhichKeyDesc_refactoring_variable = "<leader>rv Introduce variable"
+"let g:WhichKeyDesc_refactoring_field = "<leader>rf Introduce field"
+"let g:WhichKeyDesc_refactoring_signature = "<leader>rs Change signature"
+"let g:WhichKeyDesc_refactoring_all = "<leader>rr Open refactorings list"
+
+"let g:WhichKeyDesc_goto = "<leader>g Go to X"
+"let g:WhichKeyDesc_goto_declaration = "<leader>gd Go to Definition"
+"let g:WhichKeyDesc_goto_type_declaration = "<leader>gy Go to Type Definition"
+"let g:WhichKeyDesc_goto_implementation = "<leader>gi Go to Implementation"
+"let g:WhichKeyDesc_goto_usages = "<leader>gu Go to Usages"
+"let g:WhichKeyDesc_goto_test = "<leader>gt Go to Test"
+"let g:WhichKeyDesc_goto_back = "<leader>gb Go Back"
+"let g:WhichKeyDesc_goto_forward = "<leader>gf Go Forward"
+
+"let g:WhichKeyDesc_git = "<leader>g Git operations"
+"let g:WhichKeyDesc_git_commit = "<leader>gc Open Git commit dialog"
+"let g:WhichKeyDesc_git_status = "<leader>gs Open Git status dialog"
+"let g:WhichKeyDesc_git_branches = "<leader>gb Open Git branches list"
+
+"let g:WhichKeyDesc_errors = "<leader>e Error navigation"
+"let g:WhichKeyDesc_errors_next = "<leader>en Go to next error in solution"
+"let g:WhichKeyDesc_errors_prev = "<leader>ep Go to previous error in solution"
+
+"https://github.com/JetBrains/ideavim/discussions/578
+"https://medium.com/@dbilici/a-practical-ideavim-setup-for-intellij-idea-cf74222e7b45
+"https://specifications.freedesktop.org/basedir-spec/latest/
