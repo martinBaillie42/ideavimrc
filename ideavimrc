@@ -158,6 +158,9 @@ map <leader>wq <Action>(CloseAllEditors)
 " Save all files
 map <leader>s <Action>(SaveAll)
 
+" Paste from history
+map <leader>p <Action>(PasteMultiple)
+
 " Display options
 map <leader>vd <action>(ToggleDistractionFreeMode)
 map <leader>vz <action>(ToggleZenMode)
